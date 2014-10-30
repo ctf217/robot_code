@@ -5,6 +5,7 @@ byte Ly = 0; // Current Y coordinate
 const int Size = 7;
 byte centMin = 255; // The smallest index in the center square that has been found so far (the LENGTH of the current shortest path)
 
+//TODO: continue writing methods to manipulate squareData and replace old arrays
 byte squareData[Size + 1][Size + 1]; //0 - Explored, 1 and 2 - Parent Direction, 3, 4, 5, 6 - Walls (N, S, E, w) 7 - virtual walls on/off
 byte I[Size+1][Size+1]; // Array of indicies
 boolean E[Size+1][Size+1]; // Array of explored locations
