@@ -5,6 +5,8 @@ byte Ly = 0; // Current Y coordinate
 const int Size = 7;
 byte centMin = 255; // The smallest index in the center square that has been found so far (the LENGTH of the current shortest path)
 
+//TODO: continue writing methods to manipulate squareData and replace old arrays
+byte squareData[Size + 1][Size + 1]; //0 - Explored, 1 and 2 - Parent Direction, 3, 4, 5, 6 - Walls (N, S, E, w) 7 - virtual walls on/off
 byte I[Size+1][Size+1]; // Array of indicies
 boolean E[Size+1][Size+1]; // Array of explored locations
 
@@ -288,6 +290,30 @@ void loop() {
 //  }
 //}
 
+/* initializeSquareData
+*  sets all eight bits to 0 for each square in the maze
+*/
+void intializeSquareData()
+{
+  for (int i = 0; i < Size; i++)
+  {
+    for (int j = 0; j < Size; j++)
+    {
+
+      bitSet(squareData[i][j] ,0); //sets bit 0 to t0
+      bitSet(squareData[i][j] ,1); //sets bit 0 to t0
+      bitSet(squareData[i][j] ,2); //sets bit 0 to t0
+      bitSet(squareData[i][j] ,3); //sets bit 0 to t0
+      bitSet(squareData[i][j] ,4); //sets bit 0 to t0
+      bitSet(squareData[i][j] ,5); //sets bit 0 to t0
+      bitSet(squareData[i][j] ,6); //sets bit 0 to t0
+      bitSet(squareData[i][j] ,7); //sets bit 0 to t0
+      
+      
+    } 
+    
+  }  
+}
 
 /* initializeParents
 *  Initializes the parents array to all fours (Since four is an invalid number for a parent if the four is ever used an runtime error will occur)
