@@ -234,7 +234,7 @@ void loop() {
     deadEndSweep();
      parentSweep();
     outputMaze();
-    delay(delayTime);
+ 
   
   //Needs to run these methods again to update center square
   visitCenter();
@@ -478,59 +478,19 @@ void visitCenter(){
 
 // Reads sensor data and determines if there is a wall to the north
 boolean isNorthWall() {
-  int val = 0; 
-  for(int i = 0; i < 5; i++){
-    val = val + analogRead(northSensor);
-  }
-  val = val / 5;
-  if(val > wallPresentThresh){
-    return 1;
-  }
-  else{
-    return 0;
-  }
+//TODO: Insert sensor code here
 }
 // Reads sensor data and determines if there is a wall to the south
 boolean isSouthWall() {
-  int val = 0; 
-  for(int i = 0; i < 5; i++){
-    val = val + analogRead(southSensor);
-  }
-  val = val / 5;
-  if(val > wallPresentThresh){
-    return 1;
-  }
-  else{
-    return 0;
-  }
+//TODO: Insert sensor code here
 }
 // Reads sensor data and determines if there is a wall to the west
 boolean isWestWall() {
-  int val = 0; 
-  for(int i = 0; i < 5; i++){
-    val = val + analogRead(westSensor);
-  }
-  val = val / 5; 
-  if(val > wallPresentThresh){
-    return 1;
-  }
-  else{
-    return 0;
-  }
+//TODO: Insert sensor code here
 }
 // Reads sensor data and determines if there is a wall to the east
 boolean isEastWall() {
-  int val = 0; 
-  for(int i = 0; i < 5; i++){
-    val = val + analogRead(eastSensor);
-  }
-  val = val / 5;
-  if(val > wallPresentThresh){
-    return 1;
-  }
-  else{
-    return 0;
-  }
+//TODO: Insert sensor code here
 }
 
 
@@ -1328,16 +1288,9 @@ int goFromCenterToStart() {
 
 void hanselAndGretel(int c) {
   for(int i = 0; i < c; i++) {
-    if(digitalRead(ohShitButton) == HIGH) {
-    return;
-   } 
-   if(digitalRead(outOfTimeButton)==HIGH) {
-    return; 
-   }
     Serial.println("In hansel and gretel");
     Serial.println();
     outputMaze();
-    delay(delayTime);
     moveUnit(breadCrumbs[i]);
   }
 }
