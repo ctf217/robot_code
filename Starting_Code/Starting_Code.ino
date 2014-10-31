@@ -6,7 +6,7 @@ const int Size = 7;
 byte centMin = 255; // The smallest index in the center square that has been found so far (the LENGTH of the current shortest path)
 
 //TODO: continue writing methods to manipulate squareData and replace old arrays
-byte squareData[Size + 1][Size + 1]; //0 - Explored, 1 and 2 - Parent Direction, 3, 4, 5, 6 - Walls (N, S, E, w) 7 - virtual walls on/off
+byte squareData[Size + 1][Size + 1]; //0 - Explored, 1 and 2 - Parent Direction, 3, 4, 5, 6 - Walls (N, S, E, W) 7 - virtual walls on/off
 byte I[Size+1][Size+1]; // Array of indicies
 boolean E[Size+1][Size+1]; // Array of explored locations
 
@@ -300,20 +300,193 @@ void intializeSquareData()
     for (int j = 0; j < Size; j++)
     {
 
-      bitSet(squareData[i][j] ,0); //sets bit 0 to t0
-      bitSet(squareData[i][j] ,1); //sets bit 0 to t0
-      bitSet(squareData[i][j] ,2); //sets bit 0 to t0
-      bitSet(squareData[i][j] ,3); //sets bit 0 to t0
-      bitSet(squareData[i][j] ,4); //sets bit 0 to t0
-      bitSet(squareData[i][j] ,5); //sets bit 0 to t0
-      bitSet(squareData[i][j] ,6); //sets bit 0 to t0
-      bitSet(squareData[i][j] ,7); //sets bit 0 to t0
+      bitClear(squareData[i][j] ,0); //sets bit 0 to 0
+      bitSet(squareData[i][j] ,1); //sets bit 1 to 0
+      bitSet(squareData[i][j] ,2); //sets bit 2 to 0
+      bitSet(squareData[i][j] ,3); //sets bit 3 to 0
+      bitSet(squareData[i][j] ,4); //sets bit 4 to 0
+      bitSet(squareData[i][j] ,5); //sets bit 5 to 0
+      bitSet(squareData[i][j] ,6); //sets bit 6 to 0
+      bitSet(squareData[i][j] ,7); //sets bit 7 to 0
       
       
     } 
     
   }  
 }
+
+//
+//
+//NEW CODE
+//
+//
+/* setExplored
+*  given an x and y location, as well as a 0/1 for true false,
+*  sets the bit for explored to that value
+*/
+void setExplored(int lx, int ly, int q)
+{
+  bitSet(squareData[lx][ly], q);
+}
+
+/* setParent
+*  given an x and y location, as well as two 0/1 values,
+*  sets the parent of the block at (x,y) 
+*  00 - North
+*  01 - South
+*  10 - East
+*  11 - West
+*/
+void setParent(int lx, int ly, int q1, int q2)
+{
+  //north
+  if ((q1 == 0) && (q2 == 0))
+  {
+    bitClear(squareData[lx][ly], 1);
+    bitClear(squareData[lx][ly], 2);
+  }
+  
+  //south
+  else if ((q1 == 0) && (q2 == 1))
+  {
+    bitClear(squareData[lx][ly], 1);
+    bitSet(squareData[lx][ly], 2);
+  }
+  
+  //east
+  else if ((q1 == 1) && (q2 == 0))
+  {
+    bitSet(squareData[lx][ly], 1);
+    bitClear(squareData[lx][ly], 2);
+  }
+  
+  //west
+  else if ((q1 == 1) && (q2 == 1))
+  {
+    bitSet(squareData[lx][ly], 1);
+    bitSet(squareData[lx][ly], 2);
+  }
+  
+}
+
+/* setNorthWallBit
+*  given coordinates of square, sets its north wall (and the south wall of the one above it)
+*  to either true (1) or false (0)
+*  by changing bit 3
+*/
+void setNorthWallBit(int lx, int ly, int q)
+{
+  //remove a real wall
+  if (q == 0)
+  {
+    bitClear(squareData[lx][ly], 3);
+    if (ly < Size)
+    {
+      bitClear(squareData[lx][ly + 1], 4);
+    }
+  } 
+  
+  //add a real wall
+  else if (q == 1)
+  {
+    bitSet(squareData[lx][ly], 3);
+    if (ly < Size)
+    {
+      bitSet(squareData[lx][ly + 1], 4); 
+    }
+  }
+  
+}
+
+/* setEastWallBit
+*  given coordinates of square, sets its east wall (and the west wall of the one to its right)
+*  to either true (1) or false (0)
+*  by changing bit 5
+*/
+void setEastWallBit(int lx, int ly, int q)
+{
+  
+  if (q == 0)
+  {
+    bitClear(squareData[lx][ly], 5);
+    if (lx < Size)
+    {
+      bitClear(squareData[lx + 1][ly], 6);
+    }
+  } 
+  
+  else if (q == 1)
+  {
+    bitSet(squareData[lx][ly], 5);
+    if (lx < Size)
+    {
+      bitSet(squareData[lx + 1][ly], 6); 
+    {
+  }
+   
+  
+}
+
+/* setSouthWallBit
+*  given coordinates of square, sets its south wall (and the north wall of the one under it)
+*  to either true (1) or false (0)
+*  by changing bit 4
+*/
+void setSouthWallBit(int lx, int ly, int q)
+{
+  
+  if (q == 0)
+  {
+    bitClear(squareData[lx][ly], 4);
+    if (ly != 0)
+    {
+      bitClear(squareData[lx][ly - 1], 3);
+    }
+  } 
+  
+  else if (q == 1)
+  {
+    bitSet(squareData[lx][ly], 4); 
+    if (ly != 0)
+    {
+      bitSet(squareData[lx][ly - 1], 3);
+    }
+  }
+  
+}
+
+/* setWestWallBit
+*  given coordinates of a square, sets its west wall (and the east wall of the one to its left)
+*  to either true (1) or false (0)
+*  by changing bit 6
+*/
+void setWestWallBit(int lx, int ly, int q)
+{
+  
+  if (q == 0)
+  {
+    bitClear(squareData[lx][ly], 6); 
+    if (lx != 0)
+    {
+      bitClear(squareData[lx - 1][ly], 5); 
+    }
+  } 
+  
+  else if (q == 1)
+  { 
+    bitSet(squareData[lx][ly], 6);
+    if (lx != 0)
+    {
+      bitSet(squareData[lx - 1][ly], 5); 
+    }
+  
+}
+
+//
+//
+//END NEW CODE
+//
+//
 
 /* initializeParents
 *  Initializes the parents array to all fours (Since four is an invalid number for a parent if the four is ever used an runtime error will occur)
