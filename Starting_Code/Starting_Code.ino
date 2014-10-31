@@ -333,7 +333,7 @@ void initializeParents() {
 
 /* updateCentMin
 *  Checks the indices of all the center squares and makes sure centMin is set to the lowest values
-//TODO: Make it so that this method is not dependant on finalCenterSquare being initialized to higher than Size
+*  TODO: Make it so that this method is not dependant on finalCenterSquare being initialized to higher than Size
 */
 void updateCentMin() {
   if(finalCenterSquare[0]<Size) {      //TODO: Make it so that this mtethod is not dependant on finalCenterSquare being initialized to higher than Size
@@ -343,7 +343,7 @@ void updateCentMin() {
 
 /* initializeWalls
 *  Initializes all the wall physical wall matrices to 0, except for the outer walls which are set to 1.(Since we know them to be there)
-*   Also Initializes all the indices to 0 and the Explored Square MAtrix to 0
+*  Also Initializes all the indices to 0 and the Explored Square MAtrix to 0
 */
 void initializeWalls() {
   Serial.println("Initialize Walls");
@@ -371,7 +371,7 @@ void initializeWalls() {
   }
 }
 
-/* destroyVirtualWalls
+/*  destroyVirtualWalls
  *  Sets all virtual walls to zero in the entire matrix
  *  Also, used to initialize the virtual walls
  */
@@ -640,9 +640,9 @@ void setEastWall(int lx, int ly) {
 }
 
 
-//The set virtual wall methods are basically the same as the normal set wall methods but obviously set the virtual walls instead
-/* setVirtual-----Wall
-*  Same function as the 
+
+/* setVirtual*****Wall
+*  Performs the same task as the normal set wall method but with virtual walls
 */
 void setVirtualNorthWall(int lx, int ly) {
   vWn[lx][ly] = true;
@@ -739,8 +739,7 @@ void updateWalls() {
 //  } 
 //}
 
-// Updates adjacent, unexplored, wall-free squares with appropriate index numbers
-//Also updates Parents and Explored
+
 /* updateIndices
 *  Updates adjacent, unexplored, squares with no walls inbetween with appropriate index numbers and parent numbers
 *  Aslo updates the Explored matrix for the square you are presently in
@@ -806,16 +805,20 @@ void checkLinearity() {
   }
 }
 
-// Corrects indices if we find one on the current path that is not within a reasonable range of our current index
+/* correctLinearity
+*  Corrects non-linear indice pathways
+*
+*/
 void correctLinearity() {
   //Serial.println("Correcting Linearity");
-  destroyVirtualWalls();
-  boolean flag = true;
+  //We must get rid of all the virtual walls because after the linearity correction paths that were previously ruled out might be viable
+  destroyVirtualWalls();    
+  boolean flag = true;      //Set a boolean flag which will cause correct linearity to keep looping until the entire maze is linear
   while(flag) {
     flag = false;
-    for (int i = 0; i <= Size; i ++) {
+    for (int i = 0; i <= Size; i ++) {      //Loop through the maze
       for (int j = 0; j <= Size; j++) {
-        if (E[i][j]) {
+        if (E[i][j]) {                      //We are only concerned with the linearity of explored squares as they are the only squares where we know where the walls are
           // North Wall
           if (!Wn[i][j]) {
             if ((I[i][j] - I[i][j+1]) > 1) {
