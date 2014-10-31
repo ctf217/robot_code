@@ -641,7 +641,7 @@ void setEastWall(int lx, int ly) {
 
 
 //The set virtual wall methods are basically the same as the normal set wall methods but obviously set the virtual walls instead
-/* setVirtual*****Wall
+/* setVirtual-----Wall
 *  Same function as the 
 */
 void setVirtualNorthWall(int lx, int ly) {
@@ -672,7 +672,9 @@ void setVirtualEastWall(int lx, int ly) {
   }
 }
 
-// The get wall methods return true if there is either a real wall OR a virtual wall(or both) in the specified position
+/* getWall****
+*  Returns true if either the real or virtual wall is set in the specified position
+*/
 boolean getWallNorth(int lx, int ly) {
   if(vWn[lx][ly] || Wn[lx][ly]) {
     return true; 
@@ -701,7 +703,9 @@ boolean getWallEast(int lx, int ly) {
   return false;
 }
 
-// Updates wall matrices if there are walls to be found
+/* updateWalls
+*  Reads in sensor values and sets the walls of the square the robot is in accordingly
+*/
 void updateWalls() {
   if(isNorthWall() == true) {
     setNorthWall(Lx, Ly);
@@ -717,7 +721,9 @@ void updateWalls() {
   }
 }
 
-//for testing purposes
+/*VIRTUAL TEST METHOD
+* Reads in values from the test wall matrices and then sets the actual wall matrices
+*/
 //void updateWalls() {
 //  if(testWn[Lx][Ly]) {
 //    setNorthWall(Lx,Ly);
@@ -733,17 +739,15 @@ void updateWalls() {
 //  } 
 //}
 
-/* updateExplored
-*  Set explored to true for the current square the robot is in
-*/
-void updateExplored() {
-   E[Lx][Ly] = true;
-}
-
 // Updates adjacent, unexplored, wall-free squares with appropriate index numbers
 //Also updates Parents and Explored
+/* updateIndices
+*  Updates adjacent, unexplored, squares with no walls inbetween with appropriate index numbers and parent numbers
+*  Aslo updates the Explored matrix for the square you are presently in
+*  TODO: Rename this function to something more indicative of what it does
+*/
 void updateIndicies() {
-    updateExplored();
+    E[Lx][Ly] = true;
   if((!Wn[Lx][Ly]) && (Ly < Size)) {
     if(I[Lx][Ly+1] == 0) {
       I[Lx][Ly+1] = I[Lx][Ly]+1;
@@ -770,7 +774,11 @@ void updateIndicies() {
   }
 }
 
-// Checks for linearity discrepancies in the adjacent squares if there aren't walls in the way.
+/* checkLinearity
+*  Checks to see if there are discrpeancies between the indices of adjacent squares without walls in between them 
+*  (i.e A 13 adjacent to a 9 with no wall in between)
+*  If a discrepancy is found correctLinearity is called to fix it
+*/
 void checkLinearity() {
   if (!Wn[Lx][Ly]) {
     if(abs(I[Lx][Ly]-I[Lx][Ly+1]) > 1) {
