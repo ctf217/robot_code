@@ -343,7 +343,7 @@ void updateCentMin() {
 
 /* initializeWalls
 *  Initializes all the wall physical wall matrices to 0, except for the outer walls which are set to 1.(Since we know them to be there)
-*  Also Initializes all the indices to 0 and the Explored Square MAtrix to 0
+*  Also Initializes all the indices to 0 and the Explored Square Matrix to 0
 */
 void initializeWalls() {
   Serial.println("Initialize Walls");
@@ -737,6 +737,7 @@ void updateIndicies() {
 *  Checks to see if there are discrpeancies between the indices of adjacent squares without walls in between them 
 *  (i.e A 13 adjacent to a 9 with no wall in between)
 *  If a discrepancy is found correctLinearity is called to fix it
+*  TODO: I beleive checkLinearity might never be called and correctLinearity is called instead
 */
 void checkLinearity() {
   if (!Wn[Lx][Ly]) {
@@ -766,8 +767,9 @@ void checkLinearity() {
 }
 
 /* correctLinearity
-*  Corrects non-linear indice pathways
-*
+*  Checks to see if there are discrpeancies between the indices of adjacent squares without walls in between them 
+*  (i.e A 13 adjacent to a 9 with no wall in between)
+*  If a discrepancy is found it will be corrected and linearity will be restored
 */
 void correctLinearity() {
   //Serial.println("Correcting Linearity");
@@ -782,7 +784,7 @@ void correctLinearity() {
           // North Wall
           if (!Wn[i][j]) {
             if ((I[i][j] - I[i][j+1]) > 1) {
-              I[i][j] = I[i][j+1]+1;
+              I[i][j] = I[i][j+1]+1;        //If there is a wall to the North with lower 
               flag = true;
             }
             else if (((I[i][j] - I[i][j+1]) < -1)) {
